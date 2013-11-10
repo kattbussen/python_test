@@ -25,11 +25,11 @@ def printFromFile(fileName="dictionary.txt"):
 	f.close()
 
 
-printFromFile()
-addToFile()
-printFromFile()
-removeFromFile()
-printFromFile()
+#printFromFile()
+#addToFile()
+#printFromFile()
+#removeFromFile()
+#printFromFile()
 
 #print("Enter input into file:\n")
 #addString = input()
@@ -37,6 +37,20 @@ printFromFile()
 #print("You entered: "+addString)
 
 
-def readAndCompare(file="dictionary.txt"):
-	f = open(file, 'r')
+def readAndCompare(fileName="dictionary.txt"):
+	with open(fileName) as file:
+		for line in file:
+			qna = line.split('/')
+			print("Translate "+qna[0]+":")
+			answer = input()
+
+			corr_answer = qna[1].replace("\n", "")
+			
+			if answer == corr_answer:
+				print("correct!")
+			else:
+				print("wrong!")
 	#for line
+
+
+readAndCompare()
