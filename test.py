@@ -10,7 +10,7 @@ import os
 
 
 def addToFile():
-	f = open('dictionary.txt', 'r+')
+	f = open('dictionary.txt', 'a')
 	f.write("second line\n")
 	f.close()
 
