@@ -4,11 +4,17 @@ import sys
 import os
 from tempfile import NamedTemporaryFile
 
+##############################################
+#
+##############################################
 def addToFile(fileName="dictionary.txt", indata="second line\n"):
 	f = open(fileName, 'a')
 	f.write(indata)
 	f.close()
 
+##############################################
+#
+##############################################
 def removeFromFile(fileName="dictionary.txt", removeLine="second line\n"):
 	dirpath = os.path.dirname(fileName)
 	with open(fileName) as file, NamedTemporaryFile("w", dir=dirpath) as outfile:
@@ -19,28 +25,33 @@ def removeFromFile(fileName="dictionary.txt", removeLine="second line\n"):
 	os.remove(fileName)
 	os.rename(outfile.name, fileName)
 
+##############################################
+#
+##############################################
 def printFromFile(fileName="dictionary.txt"):
 	f = open(fileName, 'r')
 	print(f.read())
 	f.close()
 
+##############################################
+#
+##############################################
+def printResult():
+	global correctAnswers
+	global wrongAnswers
+	print("\nYou got "+str(correctAnswers)+" of "+str(correctAnswers+wrongAnswers)+" answers correct.\n")
 
-#printFromFile()
-#addToFile()
-#printFromFile()
-#removeFromFile()
-#printFromFile()
-
-#print("Enter input into file:\n")
-#addString = input()
-
-#print("You entered: "+addString)
-
-
+##############################################
+#
+##############################################
 def readAndCompare(fileName="dictionary.txt"):
+	
+	global correctAnswers
+	global wrongAnswers
+	
 	with open(fileName) as file:
 		for line in file:
-			qna = line.split('/')
+			qna = line.split(' / ')
 			print("Translate "+qna[0]+":")
 			answer = input()
 
@@ -48,9 +59,35 @@ def readAndCompare(fileName="dictionary.txt"):
 			
 			if answer == corr_answer:
 				print("correct!")
+				correctAnswers+=1
 			else:
 				print("wrong!")
-	#for line
+				wrongAnswers+=1
+
+##############################################
+# main
+##############################################
+def main():
+	global correctAnswers
+	global wrongAnswers
+	correctAnswers = 0
+	wrongAnswers = 0
+
+	#readAndCompare()
+	#printResult()
+
+	if(len(sys.argv) < 3):
+		print("passed more than two arguments \n")
+		print("du skickade in: "+str(sys.argv[1]))
+	else:
+		print("\n\n############################################################################")
+		print("This script can be used two ways:\n")
+		print("	'python test.py' to quiz you on all words in dictionary.txt\n")
+		print("	'python test.py <int>' to quiz you on <int> words from dictionary.txt\n")
+		print("During the quiz, answer 'please exit' to stop the quiz.\n")
+		print("############################################################################\n\n")
+
+if __name__ == '__main__':
+	main()
 
 
-readAndCompare()
