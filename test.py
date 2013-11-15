@@ -76,9 +76,15 @@ def main():
 	#readAndCompare()
 	#printResult()
 
-	if(len(sys.argv) < 3):
-		print("passed more than two arguments \n")
-		print("du skickade in: "+str(sys.argv[1]))
+	if(len(sys.argv) == 1):
+		print("passed one argument \n")
+	elif(len(sys.argv) == 2):
+		try:
+			int(sys.argv[1])
+		except ValueError:
+			print("wrong type of parameter\n")
+		else:
+			print("skickade in ett argument; "+str(int(sys.argv[1]))+"\n")
 	else:
 		print("\n\n############################################################################")
 		print("This script can be used two ways:\n")
