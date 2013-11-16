@@ -73,11 +73,10 @@ def main():
 	correctAnswers = 0
 	wrongAnswers = 0
 
-	#readAndCompare()
-	#printResult()
-
 	if(len(sys.argv) == 1):
 		print("passed one argument \n")
+		readAndCompare()
+		printResult()
 	elif(len(sys.argv) == 2):
 		try:
 			int(sys.argv[1])
@@ -85,6 +84,8 @@ def main():
 			print("wrong type of parameter\n")
 		else:
 			print("skickade in ett argument; "+str(int(sys.argv[1]))+"\n")
+			cmd = """osascript change_input_to_swedish.scpt"""
+			os.system(cmd)
 	else:
 		print("\n\n############################################################################")
 		print("This script can be used two ways:\n")
