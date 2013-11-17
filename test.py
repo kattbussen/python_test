@@ -60,39 +60,103 @@ def readAndCompare(fileName="dictionary.txt"):
 			if answer == corr_answer:
 				print("correct!")
 				correctAnswers+=1
+			elif answer == "please exit":
+				printResult()
+				sys.exit() 
 			else:
 				print("wrong!")
+				print("The correct answer is "+corr_answer+"\n")
 				wrongAnswers+=1
+
+##############################################
+#
+##############################################
+def countWords(fileName="dictionary.txt"):
+	with open(fileName) as file:
+		return len(file.readlines())		
+
+##############################################
+#
+##############################################
+def changeKeyboardLayout(language):
+	if(language == "japanese"):
+		cmd = """osascript change_input_to_hiragana.scpt"""
+	elif(language == "swedish"):
+		cmd = """osascript change_input_to_swedish.scpt"""
+	else:
+		print("ERROR: use of unknown language.\n")
+		sys.exit()
+
+	os.system(cmd)
+
+
+##############################################
+#
+##############################################
+def printHelpAndExit():
+	print("\n\n############################################################################")
+	print("This script can be used the following ways:\n")
+	print("	'python test.py' to quiz you on all words in dictionary.txt using japToEng\n")
+	print("	'python test.py <int>' to quiz you on <int> words from dictionary.txt using japToEng\n")
+	print(" 'python test.py <mode> to quiz you on all words from dictionary.txt using <mode>")
+	print("		mode can be 'japToEng', 'engToJap' or 'mixed'\n")
+	print("	'python test.py <int> <mode> to quiz you on <int words from dictionary.txt using <mode>")
+	print("		mode can be 'japToEng', 'engToJap' or 'mixed'\n")
+	print("During the quiz, answer 'please exit' to stop the quiz.\n")
+	print("############################################################################\n\n")
+	sys.exit()
 
 ##############################################
 # main
 ##############################################
 def main():
+	#initiation of variables
 	global correctAnswers
 	global wrongAnswers
+	global numberOfWords
+	global modes
+	global mode
 	correctAnswers = 0
 	wrongAnswers = 0
+	numberOfWords = 0
+	modes = ["japToEng", "engToJap", "mixed"]
+	mode = ""
 
+	#evaluation of input parameters	
 	if(len(sys.argv) == 1):
-		print("passed one argument \n")
-		readAndCompare()
-		printResult()
+		#readAndCompare()
+		#printResult()
+		numberOfWords = countWords()
+		mode = "japToEng" 
 	elif(len(sys.argv) == 2):
 		try:
 			int(sys.argv[1])
 		except ValueError:
-			print("wrong type of parameter\n")
+			if sys.argv[1] in modes:
+				mode = sys.argv[1]
+			else:
+				printHelpAndExit()
 		else:
-			print("skickade in ett argument; "+str(int(sys.argv[1]))+"\n")
-			cmd = """osascript change_input_to_swedish.scpt"""
-			os.system(cmd)
+			numberOfWords = sys.argv[1]
+	elif(len(sys.argv) == 3):
+		try:
+			int(sys.argv[1])
+		except ValueError:
+			printHelpAndExit()
+		else:
+			if sys.argv[2] in modes:
+				mode = sys.argv[2]
+			else:
+				printHelpAndExit()
+			numberOfWords = sys.argv[1]
 	else:
-		print("\n\n############################################################################")
-		print("This script can be used two ways:\n")
-		print("	'python test.py' to quiz you on all words in dictionary.txt\n")
-		print("	'python test.py <int>' to quiz you on <int> words from dictionary.txt\n")
-		print("During the quiz, answer 'please exit' to stop the quiz.\n")
-		print("############################################################################\n\n")
+		printHelpAndExit()
+
+	#Parameters evaluted correctly
+	if mode == "engToJap":
+		changeKeyboardLayout("japanese")
+
+	
 
 if __name__ == '__main__':
 	main()
