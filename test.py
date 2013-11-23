@@ -9,35 +9,6 @@ from tempfile import NamedTemporaryFile
 ##############################################
 #
 ##############################################
-def addToFile(fileName="dictionary.txt", indata="second line\n"):
-	f = open(fileName, 'a')
-	f.write(indata)
-	f.close()
-
-##############################################
-#
-##############################################
-def removeFromFile(fileName="dictionary.txt", removeLine="second line\n"):
-	dirpath = os.path.dirname(fileName)
-	with open(fileName) as file, NamedTemporaryFile("w", dir=dirpath) as outfile:
-		for line in file:
-			if removeLine not in line:
-				outfile.write(line)
-		outfile.delete = False
-	os.remove(fileName)
-	os.rename(outfile.name, fileName)
-
-##############################################
-#
-##############################################
-def printFromFile(fileName="dictionary.txt"):
-	f = open(fileName, 'r')
-	print(f.read())
-	f.close()
-
-##############################################
-#
-##############################################
 def printResult():
 	global correctAnswers
 	global wrongAnswers
@@ -47,6 +18,17 @@ def printResult():
 		changeKeyboardLayout("swedish")
 
 	print("\nYou got "+str(correctAnswers)+" of "+str(correctAnswers+wrongAnswers)+" answers correct.\n")
+
+##############################################
+#
+##############################################
+def switchMode(prevMode):
+	if prevMode == "engToJap":
+		changeKeyboardLayout("swedish")
+		return "japToEng"
+	else:
+		changeKeyboardLayout("japanese")
+		return "engToJap" 	
 
 ##############################################
 #
@@ -61,25 +43,36 @@ def readAndCompare(fileName="dictionary.txt"):
 
 	random.seed()
 
+	tmpMode = mode		
+	randomNumber = random.randint(1,2)
+	prevRandomNumber = random.randint(1,2)
+
 	#We need the range to go from 1 - words+1 because getline(1) returns the first line
 	listOfLinesToRead = random.sample(range(1, maxNumberOfWords+1), numberOfWords) 
 
-	for line in listOfLinesToRead:	
-		qnaRaw = linecache.getline(fileName, line)
-		qnaSplit = qnaRaw.partition(" / ")
+	#if we are running in 'mixed' we need to initiate the modes
+	if mode == "mixed":
+		tmpMode = "japToEng"
 
-		if mode == "engToJap":
-			qna = (qnaSplit[2].replace("\n",""), qnaSplit[1], qnaSplit[0])
+	for line in listOfLinesToRead:	
+		fullLine = linecache.getline(fileName, line)
+		splitLine = fullLine.partition(" / ")
+
+		prevRandomNumber = randomNumber
+		randomNumber = random.randint(1,2)	
+
+		if mode == "mixed" and prevRandomNumber != randomNumber:
+			tmpMode = switchMode(tmpMode)			
+
+		if tmpMode == "engToJap":
+			qna = (splitLine[2].replace("\n",""), splitLine[1], splitLine[0])
 		else:
-			qna = (qnaSplit[0], qnaSplit[1], qnaSplit[2].replace("\n",""))
+			qna = (splitLine[0], splitLine[1], splitLine[2].replace("\n",""))
 
 		print("Translate '"+qna[0]+"':")
-		answer = input()
+		answer = input().lower()
 
-		#corr_answer = qna[2].replace("\n", "")
-		corr_answer = qna[2]
-	
-		if answer == corr_answer:
+		if answer == qna[2]:
 			print("correct!")
 			correctAnswers+=1
 		elif answer == "please exit":	
@@ -87,8 +80,9 @@ def readAndCompare(fileName="dictionary.txt"):
 				sys.exit() 
 		else:
 			print("wrong!")
-			print("The correct answer is "+corr_answer+"\n")
+			print("The correct answer is "+qna[2]+"\n")
 			wrongAnswers+=1
+
 
 ##############################################
 #
