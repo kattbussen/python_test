@@ -41,6 +41,7 @@ def printFromFile(fileName="dictionary.txt"):
 def printResult():
 	global correctAnswers
 	global wrongAnswers
+	global mode
 	
 	if(mode != "japToEng"):
 		changeKeyboardLayout("swedish")
@@ -121,7 +122,7 @@ def printHelpAndExit():
 	print("	'python test.py <int>' to quiz you on <int> words from dictionary.txt using japToEng\n")
 	print(" 'python test.py <mode> to quiz you on all words from dictionary.txt using <mode>")
 	print("		mode can be 'japToEng', 'engToJap' or 'mixed'\n")
-	print("	'python test.py <int> <mode> to quiz you on <int words from dictionary.txt using <mode>")
+	print("	'python test.py <int> <mode> to quiz you on <int> words from dictionary.txt using <mode>")
 	print("		mode can be 'japToEng', 'engToJap' or 'mixed'\n")
 	print("During the quiz, answer 'please exit' to stop the quiz.\n")
 	print("############################################################################\n\n")
@@ -143,12 +144,10 @@ def main():
 	numberOfWords = countWords()
 	maxNumberOfWords = numberOfWords
 	modes = ["japToEng", "engToJap", "mixed"]
-	mode = ""
+	mode = "japToEng"
 
 	#evaluation of input parameters	
-	if(len(sys.argv) == 1):
-		mode = "japToEng" 
-	elif(len(sys.argv) == 2):
+	if(len(sys.argv) == 2):
 		try:
 			int(sys.argv[1])
 		except ValueError:
@@ -177,7 +176,7 @@ def main():
 	#Parameters evaluted correctly
 	if mode == "engToJap":
 		changeKeyboardLayout("japanese")
-	
+
 	readAndCompare()
 	printResult()
 
