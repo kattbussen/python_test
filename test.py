@@ -2,6 +2,8 @@
 
 import sys
 import os
+import random
+import linecache
 from tempfile import NamedTemporaryFile
 
 ##############################################
@@ -39,6 +41,10 @@ def printFromFile(fileName="dictionary.txt"):
 def printResult():
 	global correctAnswers
 	global wrongAnswers
+	
+	if(mode != "japToEng"):
+		changeKeyboardLayout("swedish")
+
 	print("\nYou got "+str(correctAnswers)+" of "+str(correctAnswers+wrongAnswers)+" answers correct.\n")
 
 ##############################################
@@ -48,25 +54,40 @@ def readAndCompare(fileName="dictionary.txt"):
 	
 	global correctAnswers
 	global wrongAnswers
-	
-	with open(fileName) as file:
-		for line in file:
-			qna = line.split(' / ')
-			print("Translate "+qna[0]+":")
-			answer = input()
+	global numberOfWords
+	global maxNumberOfWords
+	global mode	
 
-			corr_answer = qna[1].replace("\n", "")
-			
-			if answer == corr_answer:
-				print("correct!")
-				correctAnswers+=1
-			elif answer == "please exit":
+	random.seed()
+
+	#We need the range to go from 1 - words+1 because getline(1) returns the first line
+	listOfLinesToRead = random.sample(range(1, maxNumberOfWords+1), numberOfWords) 
+
+	for line in listOfLinesToRead:	
+		qnaRaw = linecache.getline(fileName, line)
+		qnaSplit = qnaRaw.partition(" / ")
+
+		if mode == "engToJap":
+			qna = (qnaSplit[2].replace("\n",""), qnaSplit[1], qnaSplit[0])
+		else:
+			qna = (qnaSplit[0], qnaSplit[1], qnaSplit[2].replace("\n",""))
+
+		print("Translate '"+qna[0]+"':")
+		answer = input()
+
+		#corr_answer = qna[2].replace("\n", "")
+		corr_answer = qna[2]
+	
+		if answer == corr_answer:
+			print("correct!")
+			correctAnswers+=1
+		elif answer == "please exit":	
 				printResult()
 				sys.exit() 
-			else:
-				print("wrong!")
-				print("The correct answer is "+corr_answer+"\n")
-				wrongAnswers+=1
+		else:
+			print("wrong!")
+			print("The correct answer is "+corr_answer+"\n")
+			wrongAnswers+=1
 
 ##############################################
 #
@@ -114,19 +135,18 @@ def main():
 	global correctAnswers
 	global wrongAnswers
 	global numberOfWords
+	global maxNumberOfWords
 	global modes
 	global mode
 	correctAnswers = 0
 	wrongAnswers = 0
-	numberOfWords = 0
+	numberOfWords = countWords()
+	maxNumberOfWords = numberOfWords
 	modes = ["japToEng", "engToJap", "mixed"]
 	mode = ""
 
 	#evaluation of input parameters	
 	if(len(sys.argv) == 1):
-		#readAndCompare()
-		#printResult()
-		numberOfWords = countWords()
 		mode = "japToEng" 
 	elif(len(sys.argv) == 2):
 		try:
@@ -137,7 +157,8 @@ def main():
 			else:
 				printHelpAndExit()
 		else:
-			numberOfWords = sys.argv[1]
+			if int(sys.argv[1]) < numberOfWords:
+				numberOfWords = int(sys.argv[1])
 	elif(len(sys.argv) == 3):
 		try:
 			int(sys.argv[1])
@@ -148,15 +169,17 @@ def main():
 				mode = sys.argv[2]
 			else:
 				printHelpAndExit()
-			numberOfWords = sys.argv[1]
+			if int(sys.argv[1]) < numberOfWords:
+				numberOfWords = int(sys.argv[1])
 	else:
 		printHelpAndExit()
 
 	#Parameters evaluted correctly
 	if mode == "engToJap":
 		changeKeyboardLayout("japanese")
-
 	
+	readAndCompare()
+	printResult()
 
 if __name__ == '__main__':
 	main()
