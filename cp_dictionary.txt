@@ -1,2 +1,77 @@
-はなす / talk
-はな / flower
+﻿おはよう / good morning
+おはよう　ございます / good morning (polite)
+こんいちは / good afternoon
+こんばんは / good evening
+さようなら / good bye
+おやすみ　なさい / good night
+ありがとう / thank you
+ありがとう　ございます / thank you  (polite)
+すみません / excuse me; im sorry
+いいえ / no; not at all
+いってきます / ill go and come back
+いってらっしゃい / please go and come back
+ただいま / im home
+おかえり　なさい / welcome home
+いただきます / thank you for the meal (before eating)
+ごちそうさまでした / thank you for the meal (after eating)
+はじめまして / how do you do?
+よろしく　おねがいします / nice to meet you
+あの / um
+いま / now
+えいご / english (language)
+ええ / yes
+がくせい / student
+ご / (..)language
+こうこう / high school
+ごご / p.m
+ごぜん / a.m
+さい / (..)years old
+さん / mr/ms
+じ / (..)o clock
+じん / (..)people
+せんこう / major (school subject)
+せんせい / teacher; professor
+そうです / thats right
+そうですか / i see; is that so?
+だいがく / college; university
+でんわ / telephone
+ともだち / fiend
+なまえ / name
+なん/なんい / what
+にほん / japan
+ねんせい / (..)year student
+はい / yes
+はん / half
+ばんごう / number
+りゅうがくせい / international student
+わたし / i (me)
+アメリカ / usa
+イギリス / britain
+オーストラリア / australia
+かんこく / korea
+スウェーデン / sweden
+ちゅうごく / china
+かがく / science
+アジアけんきゅう / asian studies
+けいざい / economics
+こくさいかんけい / international relations
+コンピューター / computer
+じんるいがく / anthropology
+せいじ / politics
+ビジネス / business
+ぶんがく / literature
+れきし / history
+しごと / job; work; occupation
+いしゃ / doctor
+かいしゃいん / office worker
+こうこうせい / high school student
+しゅふ / housewife
+だいがくいんせい / graduate student
+だいがくせい / college student
+べんごし / lawyer
+おかあさん / mother
+おとうさん / father
+おねえさん / older sister
+おにいさん / older brother
+いもうと / younger sister
+おとうと / younger brother

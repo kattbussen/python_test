@@ -69,10 +69,10 @@ def readAndCompare(fileName="dictionary.txt"):
 		else:
 			qna = (splitLine[0], splitLine[1], splitLine[2].replace("\n",""))
 
-		print("Translate '"+qna[0]+"':")
+		print("Translate --  "+qna[0]+"  --:")
 		answer = input().lower()
 
-		if answer == qna[2]:
+		if checkAnswer(answer, qna[2]):
 			print("correct!")
 			correctAnswers+=1
 		elif answer == "please exit":	
@@ -80,9 +80,27 @@ def readAndCompare(fileName="dictionary.txt"):
 				sys.exit() 
 		else:
 			print("wrong!")
-			print("The correct answer is "+qna[2]+"\n")
+			print("The correct answer is ' "+qna[2].replace("; "," ' or ' ")+" '\n")
 			wrongAnswers+=1
 
+
+##############################################
+#
+##############################################
+def checkAnswer(givenAnswer, corrAnswer):
+	if givenAnswer == corrAnswer.replace("(..)",""):
+		return True
+
+	answerList = corrAnswer.split("; ")	
+
+	for item in answerList:
+		
+
+	if givenAnswer in answerList:
+		return True
+
+
+	return False
 
 ##############################################
 #
@@ -164,7 +182,7 @@ def main():
 				printHelpAndExit()
 			if int(sys.argv[1]) < numberOfWords:
 				numberOfWords = int(sys.argv[1])
-	else:
+	elif len(sys.argv) != 1:
 		printHelpAndExit()
 
 	#Parameters evaluted correctly
